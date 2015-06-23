@@ -21,7 +21,7 @@ server.post('/api/articles', controllers.article.createArticle);
 server.get('/api/articles', controllers.article.getArticles);
 server.get('/api/articles/:id', controllers.article.getArticle);
 server.put('/api/articles/:id', controllers.article.updateArticle);
-server.del('api/articles/:id', controllers.article.deleteArticle);
+server.del('/api/articles/:id', controllers.article.deleteArticle);
 
 // print this out whenever there is any request
 server.pre(function (req, res, next) {

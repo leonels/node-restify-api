@@ -63,35 +63,57 @@ exports.getArticle = function(req, res, next) {
     })
 }
  
-// exports.updateArticle = function(req, res, next) {
-//     console.log('request params');
-//     console.log(req.params);
-//     console.log('request body');
-//     console.log(req.body);
-//     console.log('_________________________');
-//     var updatedArticleModel = new Article(req.body);
-//     Article.findByIdAndUpdate(new ObjectId(req.params.id), updatedArticleModel, function(err, article) {
-//         if (err) {
-//             res.status(500);
-//             res.json({
-//                 type: false,
-//                 data: "Error occured: " + err
-//             })
-//         } else {
-//             if (article) {
-//                 res.json({
-//                     type: true,
-//                     data: article
-//                 })
-//             } else {
-//                 res.json({
-//                     type: false,
-//                     data: "Article: " + req.params.id + " not found"
-//                 })
-//             }
-//         }
-//     })
-// }
+exports.updateArticle = function(req, res, next) {
+    // var updatedArticleModel = new Article(req.body);
+    // Article.findByIdAndUpdate(new ObjectId(req.params.id), updatedArticleModel, function(err, article) {
+    //     if (err) {
+    //         res.status(500);
+    //         res.json({
+    //             type: false,
+    //             data: "Error occured: " + err
+    //         })
+    //     } else {
+    //         if (article) {
+    //             res.json({
+    //                 type: true,
+    //                 data: article
+    //             })
+    //         } else {
+    //             res.json({
+    //                 type: false,
+    //                 data: "Article: " + req.params.id + " not found"
+    //             })
+    //         }
+    //     }
+    // })
+
+    // if (req.params.email === undefined) {
+    //     return next(new restify.InvalidArgumentError('Email must be supplied'))
+    // }
+    var articleData = {
+        title: req.params.title,
+        content: req.params.content
+    }
+    Article.update({ _id: req.params.id }, articleData, {
+        multi: false
+    }, function (error, article) {
+        if (error) {
+            // return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))
+            res.status(500)
+            res.json({
+                type: false,
+                data: "Error ocurred: " + error
+            })
+        } else {
+            if (article) {
+                res.json({
+                    type: true,
+                    data: article
+                })
+            }
+        }
+    })
+}
  
 exports.deleteArticle = function(req, res, next) {
     Article.findByIdAndRemove(new Object(req.params.id), function(err, article) {
